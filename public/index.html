@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Квадрат Декарта + AI</title>
+</head>
+<body>
+  <h1>Квадрат Декарта</h1>
+  <textarea id="q1" placeholder="1. Что будет, если это случится?"></textarea><br>
+  <textarea id="q2" placeholder="2. Что будет, если это не случится?"></textarea><br>
+  <textarea id="q3" placeholder="3. Чего не будет, если это случится?"></textarea><br>
+  <textarea id="q4" placeholder="4. Чего не будет, если это не случится?"></textarea><br>
+  <button onclick="sendToAI()">Получить рекомендацию</button>
+
+  <div id="ai-response" style="margin-top:20px;"></div>
+
+  <script>
+    async function sendToAI() {
+      const q1 = document.getElementById("q1").value;
+      const q2 = document.getElementById("q2").value;
+      const q3 = document.getElementById("q3").value;
+      const q4 = document.getElementById("q4").value;
+
+      const response = await fetch("/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ q1, q2, q3, q4 })
+      });
+
+      const data = await response.json();
+      document.getElementById("ai-response").innerHTML = `<pre>${data.result}</pre>`;
+    }
+  </script>
+</body>
+</html>
